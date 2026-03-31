@@ -1,0 +1,1 @@
+# copilot-cli-notify-template
