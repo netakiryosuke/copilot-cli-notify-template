@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "hooks": {
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "~/.local/bin/notify.sh '✅ Copilot' 'タスクが完了しました'",
+        "timeoutSec": 10
+      }
+    ],
+    "subagentStop": [
+      {
+        "type": "command",
+        "bash": "~/.local/bin/notify.sh '🤖 サブエージェント' '処理が完了しました'",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "~/.local/bin/copilot-post-tool.sh",
+        "timeoutSec": 10
+      }
+    ],
+    "errorOccurred": [
+      {
+        "type": "command",
+        "bash": "~/.local/bin/notify.sh '⚠️ エラー発生' 'Copilotでエラーが発生しました'",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}
