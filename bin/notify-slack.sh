@@ -14,8 +14,9 @@ if [ -z "$SLACK_WEBHOOK_URL" ]; then
   exit 0
 fi
 
+# Use jq to build JSON to prevent injection via special characters in TITLE/MESSAGE.
+PAYLOAD=$(jq -n --arg text "*${TITLE}*\n${MESSAGE}" '{"text": $text}')
+
 curl -s -X POST "$SLACK_WEBHOOK_URL" \
   -H 'Content-type: application/json' \
-  -d "{
-    \"text\": \"*${TITLE}*\n${MESSAGE}\"
-  }" > /dev/null &
+  -d "$PAYLOAD" > /dev/null &
