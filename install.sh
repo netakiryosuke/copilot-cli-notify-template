@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 # Installs the Copilot CLI notification hooks and scripts.
 # Run this script from the repository root.
+#
+# Options:
+#   -f  Force overwrite of existing hooks.json without prompting
 
 set -euo pipefail
+
+FORCE=false
+while getopts "f" opt; do
+  case "$opt" in
+    f) FORCE=true ;;
+    *) echo "Usage: $0 [-f]" >&2; exit 1 ;;
+  esac
+done
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 BIN_DIR="$HOME/.local/bin"
@@ -24,10 +35,18 @@ chmod +x "$BIN_DIR"/notify.sh \
          "$BIN_DIR"/copilot-pre-tool.sh
 
 echo "==> Installing hooks.json to $HOOKS_DIR ..."
-if [ -f "$HOOKS_DIR/hooks.json" ]; then
-  echo "    hooks.json already exists — skipping (back it up manually if needed)"
-else
-  cp "$REPO_DIR/hooks/hooks.json" "$HOOKS_DIR/hooks.json"
+HOOKS_DEST="$HOOKS_DIR/hooks.json"
+if [ -f "$HOOKS_DEST" ] && [ "$FORCE" = false ]; then
+  read -r -p "    hooks.json already exists. Overwrite? [y/N] " answer
+  case "$answer" in
+    [yY]*) ;;
+    *) echo "    Skipped."; SKIP_HOOKS=true ;;
+  esac
+fi
+
+if [ "${SKIP_HOOKS:-false}" = false ]; then
+  cp "$REPO_DIR/hooks/hooks.json" "$HOOKS_DEST"
+  echo "    Installed."
 fi
 
 echo ""
