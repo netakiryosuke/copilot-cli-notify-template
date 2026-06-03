@@ -15,6 +15,14 @@
         "timeoutSec": 10
       }
     ],
+    "notification": [
+      {
+        "type": "command",
+        "bash": "~/.local/bin/copilot-notification.sh",
+        "matcher": "elicitation_dialog|permission_prompt",
+        "timeoutSec": 10
+      }
+    ],
     "preToolUse": [
       {
         "type": "command",
