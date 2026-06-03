@@ -14,9 +14,18 @@ if [ -z "$SLACK_WEBHOOK_URL" ]; then
   exit 0
 fi
 
-# Use jq string interpolation so "\n" becomes a real newline in the Slack message.
-# NOTE: Do NOT use --arg to embed \n — jq --arg treats it as a literal backslash-n.
-PAYLOAD=$(jq -n --arg title "$TITLE" --arg message "$MESSAGE" '{"text": ("*" + $title + "*\n" + $message)}')
+# Use Slack Block Kit format for better title/message separation
+PAYLOAD=$(jq -n --arg title "$TITLE" --arg message "$MESSAGE" '{
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": ("*" + $title + "*\n" + $message)
+      }
+    }
+  ]
+}')
 
 curl -s -X POST "$SLACK_WEBHOOK_URL" \
   -H 'Content-type: application/json' \
