@@ -4,7 +4,7 @@
     "sessionStart": [
       {
         "type": "command",
-        "bash": "nohup ~/.local/bin/watch-ask-user.sh > /dev/null 2>&1 &",
+        "bash": "nohup setsid ~/.local/bin/watch-ask-user.sh > /dev/null 2>&1 &",
         "timeoutSec": 5
       }
     ],
