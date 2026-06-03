@@ -35,6 +35,11 @@
         "type": "command",
         "bash": "~/.local/bin/copilot-post-tool.sh",
         "timeoutSec": 10
+      },
+      {
+        "type": "command",
+        "bash": "~/.local/bin/copilot-ask-user.sh",
+        "timeoutSec": 10
       }
     ],
     "errorOccurred": [
