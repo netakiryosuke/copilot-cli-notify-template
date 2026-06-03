@@ -28,14 +28,12 @@ cp "$REPO_DIR/bin/notify-windows.sh"      "$BIN_DIR/notify-windows.sh"
 cp "$REPO_DIR/bin/notify-slack.sh"        "$BIN_DIR/notify-slack.sh"
 cp "$REPO_DIR/bin/copilot-notification.sh" "$BIN_DIR/copilot-notification.sh"
 cp "$REPO_DIR/bin/copilot-post-tool.sh"   "$BIN_DIR/copilot-post-tool.sh"
-cp "$REPO_DIR/bin/copilot-pre-tool.sh"    "$BIN_DIR/copilot-pre-tool.sh"
 cp "$REPO_DIR/bin/watch-ask-user.sh"      "$BIN_DIR/watch-ask-user.sh"
 chmod +x "$BIN_DIR"/notify.sh \
          "$BIN_DIR"/notify-windows.sh \
          "$BIN_DIR"/notify-slack.sh \
          "$BIN_DIR"/copilot-notification.sh \
          "$BIN_DIR"/copilot-post-tool.sh \
-         "$BIN_DIR"/copilot-pre-tool.sh \
          "$BIN_DIR"/watch-ask-user.sh
 
 echo "==> Installing hooks.json to $HOOKS_DIR ..."
