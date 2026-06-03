@@ -6,10 +6,21 @@ GitHub Copilot CLI のフック機能を使って、タスク完了・エラー�
 
 | フックイベント | 通知内容 |
 |---|---|
+| `sessionStart` | `watch-ask-user.sh` をバックグラウンド起動し、`ask_user` 呼び出しを監視 |
+| `sessionEnd` | `watch-ask-user.sh` を終了 |
 | `agentStop` | Copilot タスク完了 |
 | `subagentStop` | サブエージェント処理完了 |
 | `postToolUse` | `git commit` を検知してコミットメッセージを通知 |
 | `errorOccurred` | エラー発生 |
+
+`watch-ask-user.sh` はセッションの `events.jsonl` を `tail -F` で監視し、`ask_user` ツール呼び出しを検知したときにその質問文を通知します。
+
+`copilot-notification.sh` は Copilot CLI から標準入力で渡される通知ペイロードを処理します。現在対応しているタイプ：
+
+| `notification_type` | 通知タイトル |
+|---|---|
+| `elicitation_dialog` | ❓ Copilotが質問しています |
+| `permission_prompt` | 🔐 許可が必要です |
 
 ## スクリーンショット
 
@@ -30,7 +41,7 @@ GitHub Copilot CLI のフック機能を使って、タスク完了・エラー�
 
 | ツール | 用途 | 対象スクリプト |
 |---|---|---|
-| `jq` | JSON のビルド・パース | `notify-slack.sh`, `copilot-post-tool.sh` |
+| `jq` | JSON のビルド・パース | `notify-slack.sh`, `copilot-post-tool.sh`, `copilot-notification.sh`, `watch-ask-user.sh` |
 | `curl` | Slack Webhook への HTTP POST | `notify-slack.sh` |
 | `powershell.exe` | Windows トースト通知（WSL 環境のみ） | `notify-windows.sh` |
 
@@ -58,7 +69,7 @@ cd copilot-cli-notify-template
 
 `install.sh` は以下を行います：
 - `bin/` 以下のスクリプトを `~/.local/bin/` へコピー
-- `hooks/hooks.json` を `~/.copilot/hooks/` へコピー（既存ファイルは上書きしない）
+- `hooks/hooks.json` を `~/.copilot/hooks/` へコピー（既存ファイルがある場合は上書き確認。`-f` オプションで確認をスキップ）
 
 ### 2. Slack Webhook URL の設定
 
@@ -80,13 +91,15 @@ WSL 上から `powershell.exe` が実行できる環境であれば、追加設�
 ```
 .
 ├── bin/
-│   ├── notify.sh               # 通知ディスパッチャー
-│   ├── notify-windows.sh       # Windows トースト通知
-│   ├── notify-slack.sh         # Slack 通知
-│   └── copilot-post-tool.sh    # postToolUse フック
+│   ├── notify.sh                  # 通知ディスパッチャー
+│   ├── notify-windows.sh          # Windows トースト通知
+│   ├── notify-slack.sh            # Slack 通知
+│   ├── copilot-notification.sh    # Copilot CLI システム通知ハンドラー
+│   ├── copilot-post-tool.sh       # postToolUse フック
+│   └── watch-ask-user.sh          # ask_user 呼び出し監視デーモン
 ├── hooks/
-│   └── hooks.json              # Copilot CLI フック設定
-└── install.sh                  # インストールスクリプト
+│   └── hooks.json                 # Copilot CLI フック設定
+└── install.sh                     # インストールスクリプト
 ```
 
 ## カスタマイズ
