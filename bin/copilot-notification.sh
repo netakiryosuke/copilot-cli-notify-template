@@ -8,6 +8,10 @@
 #   title: optional short title
 
 INPUT=$(cat)
+
+# Log the actual payload for debugging
+echo "$INPUT" >> /tmp/copilot-hook-payload.log
+
 NOTIFICATION_TYPE=$(echo "$INPUT" | jq -r '.notification_type // empty')
 MESSAGE=$(echo "$INPUT" | jq -r '.message // empty')
 TITLE=$(echo "$INPUT" | jq -r '.title // empty')
