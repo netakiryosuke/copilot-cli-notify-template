@@ -19,12 +19,28 @@ TITLE=$(echo "$INPUT" | jq -r '.title // empty')
 case "$NOTIFICATION_TYPE" in
   elicitation_dialog)
     # ask_user: Copilot is waiting for user input
-    DISPLAY_TITLE="${TITLE:-❓ Copilotが質問しています}"
+    if [ -z "$TITLE" ]; then
+      DISPLAY_TITLE="❓ Copilotが質問しています"
+    else
+      DISPLAY_TITLE="$TITLE"
+    fi
     ~/.local/bin/notify.sh "$DISPLAY_TITLE" "$MESSAGE"
     ;;
   permission_prompt)
     # Copilot is asking for permission to execute a tool
-    DISPLAY_TITLE="${TITLE:-🔐 許可が必要です}"
+    if [ -z "$TITLE" ]; then
+      DISPLAY_TITLE="🔐 許可が必要です"
+    else
+      # Translate common English titles to Japanese
+      case "$TITLE" in
+        "Permission needed")
+          DISPLAY_TITLE="🔐 許可が必要です"
+          ;;
+        *)
+          DISPLAY_TITLE="$TITLE"
+          ;;
+      esac
+    fi
     ~/.local/bin/notify.sh "$DISPLAY_TITLE" "$MESSAGE"
     ;;
 esac
