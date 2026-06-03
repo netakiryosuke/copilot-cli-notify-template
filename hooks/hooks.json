@@ -15,6 +15,13 @@
         "timeoutSec": 10
       }
     ],
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "~/.local/bin/copilot-pre-tool.sh",
+        "timeoutSec": 10
+      }
+    ],
     "postToolUse": [
       {
         "type": "command",

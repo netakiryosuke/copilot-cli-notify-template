@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # postToolUse hook: notifies when a git commit is made via Copilot CLI.
 # Reads JSON from stdin as provided by the Copilot CLI hook runtime.
+# NOTE: toolArgs is a JSON-encoded string, so we use `fromjson` to parse it.
 
 INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.toolName // empty')
 
 if [ "$TOOL_NAME" = "bash" ]; then
-  COMMAND=$(echo "$INPUT" | jq -r '.toolArgs.command // empty')
+  COMMAND=$(echo "$INPUT" | jq -r '.toolArgs | fromjson | .command // empty')
 
   if echo "$COMMAND" | grep -q "git commit"; then
     MSG=$(echo "$COMMAND" | grep -oP '(?<=-m ")[^"]+(?=")')
