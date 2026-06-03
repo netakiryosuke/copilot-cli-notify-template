@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # postToolUse hook: notifies when Copilot asks the user a question via ask_user.
-# Reads JSON from stdin as provided by the Copilot CLI hook runtime.
+# NOTE: This fires AFTER the user answers since ask_user bypasses preToolUse hooks.
+#       Keep this for awareness notifications (e.g. Slack) even after the fact.
 # NOTE: toolArgs is a JSON-encoded string, so we use `fromjson` to parse it.
 
 INPUT=$(cat)
