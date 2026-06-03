@@ -1,6 +1,20 @@
 {
   "version": 1,
   "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "~/.local/bin/watch-ask-user.sh &",
+        "timeoutSec": 5
+      }
+    ],
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": "pkill -f watch-ask-user.sh || true",
+        "timeoutSec": 5
+      }
+    ],
     "agentStop": [
       {
         "type": "command",
@@ -23,22 +37,10 @@
         "timeoutSec": 10
       }
     ],
-    "preToolUse": [
-      {
-        "type": "command",
-        "bash": "~/.local/bin/copilot-pre-tool.sh",
-        "timeoutSec": 10
-      }
-    ],
     "postToolUse": [
       {
         "type": "command",
         "bash": "~/.local/bin/copilot-post-tool.sh",
-        "timeoutSec": 10
-      },
-      {
-        "type": "command",
-        "bash": "~/.local/bin/copilot-ask-user.sh",
         "timeoutSec": 10
       }
     ],
