@@ -1,4 +1,4 @@
-# copilot-cli-notify-template
+# coding-agent-notify-template
 
 GitHub Copilot CLI と Codex CLI の通知をまとめて設定するテンプレートです。Windows トースト通知（WSL）と Slack Incoming Webhook に対応しています。
 
