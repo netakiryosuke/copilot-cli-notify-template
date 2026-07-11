@@ -1,0 +1,4 @@
+# Codex CLI configuration fragment.
+# install.sh creates or prepends this top-level setting to ~/.codex/config.toml.
+# The command receives Codex's notification JSON through standard input.
+notify = ["bash", "-lc", "~/.local/bin/codex-notify.sh"]

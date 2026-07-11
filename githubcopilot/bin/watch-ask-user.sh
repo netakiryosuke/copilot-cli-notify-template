@@ -3,7 +3,7 @@
 PGID=$(ps -o pgid= $$ | tr -d ' ')
 
 cleanup() {
-    kill -- -"${PGID}" 2>/dev/null || true
+    kill -- "-${PGID}" 2>/dev/null || true
 }
 
 trap cleanup EXIT TERM INT
